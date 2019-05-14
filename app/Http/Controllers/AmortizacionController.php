@@ -16,24 +16,34 @@ class AmortizacionController extends Controller
     {
         return view('amortizacion.index');
     }
-//07/05/19 
+//07/05/19
     public function buscar(Request $request){
         //dd($request);
         $socio = Persona::where('ci',$request['ci'])->get()
                     ->last()->socio;
         if(isset($socio)){
             $prestamo = $socio->prestamos->last();
-            
+
             if(isset($prestamo)) {
                 $amortizacion = $prestamo->amortizaciones;
                 if(isset($amortizacion))
                    $total = $amortizacion->sum('capital');
-               $datos['socio'] = $socio->persona;
-               $datos['numero'] = $socio->numero;
-               $datos['pago'] =              //¿cómo calcularía la nueva cifra? chan chan chan...., me muero, me muero chu chu chu, ViERNES!!!:D :(
+                $cuotas=count($amortizacion);
+                $saldo=$prestamo->monto - $total;
+                $capital=$saldo/($prestamo->plazo-$cuotas);
+                $interes = $saldo*$prestamo->tasa_interes/12/100;
+
+                $datos['socio'] = $socio->persona;
+                $datos['numero'] = $socio->numero;
+                $datos['saldo'] = $saldo ;
+                $datos['capital']=$capital;
+                $datos['interes']=$interes;
+                $datos['cuotas']=$cuotas;
+                $datos['prestamo_id']=$prestamo->id;
+                return view('amortizacion.create')->with('datos',$datos);            //¿cómo calcularía la nueva cifra? chan chan chan...., me muero, me muero chu chu chu, ViERNES!!!:D :(
             }
         }
-        return "No es socio";    
+        return "No es socio";
     }
 
     /**
@@ -54,7 +64,14 @@ class AmortizacionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $amortizacion=new Amortizacion;
+        $amortizacion->capital =$request['monto']-$request['interes'];
+        $amortizacion->interes= $$request['interes'];
+        $amortizacion->seguro=0;
+        $amortizacion->prestamo_id= $request['prestamo_id'];
+        $amortizacion->cajera_id=1;
+        $amortizacion->save();
+        return redirect('amortizaciones');
     }
 
     /**
