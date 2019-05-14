@@ -7,6 +7,10 @@
        {{ Form::label('ci','C.I: ') }}
        {{ Form::number('ci','0', ['id'=>'ci','required']) }}
        <br>
+	@if($errors->has('ci'))
+		{{$errors->first('ci')}}
+	@endif
+	<br>
        {{ Form::label('nombres','Nombres: ')}}
        {{ Form::text('nombres','', ['id'=>'nombres',
        'placeholder'=>'Introduzca el nombre','required'])}}
@@ -39,6 +43,10 @@
 
 
 	{{ Form::close() }}
-
+	@if($errors->any())
+	@foreach($errors as $error)
+	{{$error}}
+	@endforeach
+	@endif
 </body>
 </html>

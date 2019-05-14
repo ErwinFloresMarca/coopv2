@@ -20,7 +20,7 @@ class Persona extends Model
         $per->materno = $request['materno'];
         $per->telefono = $request['telefono'];
         $per->email = $request['email'];
-        $per->password = $request['password'];
+        $per->password =bcrypt( $request['password']);
         //dd($per)
         $per->save();
         //return "persona guardada";
