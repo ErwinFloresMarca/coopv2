@@ -64,14 +64,22 @@ class AmortizacionController extends Controller
      */
     public function store(Request $request)
     {
-        $reglas=array(''=>'');
-	$amortizacion=new Amortizacion;
-        $amortizacion->capital =$request['monto']-$request['interes'];
-        $amortizacion->interes=$request['interes'];
-        $amortizacion->seguro=0;
-        $amortizacion->prestamo_id= $request['prestamo_id'];
-        $amortizacion->cajera_id=1;
-        $amortizacion->save();
+        $reglas=array('monto'=>'max:'.(int)($request['saldo']+$request['interes']).'|min:'.($request['capital']+$request['interes']).'');
+        //dd($request);
+        //dd($reglas);
+        $errores=$this->validate(request(),$reglas);
+
+        if(false){
+          $amortizacion=new Amortizacion;
+          $amortizacion->capital =$request['monto']-$request['interes'];
+          $amortizacion->interes=$request['interes'];
+          $amortizacion->seguro=0;
+          $amortizacion->prestamo_id= $request['prestamo_id'];
+          $amortizacion->cajera_id=1;
+
+          $amortizacion->save();
+          return redirect('amortizaciones');
+        }
         return redirect('amortizaciones');
     }
 

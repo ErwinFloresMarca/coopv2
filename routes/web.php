@@ -42,7 +42,7 @@ Route::get('ejemplo/{nombre}/{edad}', function($nombre,$edad){
 Route::get('master', function(){
 	return view('master');
 });
- 
+
 Route::get('admin/index', function(){
 	$datos= array('nombre'=> 'Marian',
 		           'edad'=> '22');
@@ -75,3 +75,4 @@ Route::get('prestamo/plan/{id}','PrestamoController@plan_pagos');
 Route::get('amortizaciones','AmortizacionController@index');
 Route::post('amortizaciones/buscar','AmortizacionController@buscar')
             ->name('amortizacion.buscar');
+Route::post('amortizaciones/guardar','AmortizacionController@store')->name('amortizacion.store');

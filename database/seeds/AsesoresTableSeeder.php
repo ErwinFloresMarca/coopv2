@@ -13,7 +13,7 @@ class AsesoresTableSeeder extends Seeder
     {
         //
         DB::table('asesores')->insert([
-        	'persona_id' => 2,
+        	'persona_id' => 3,
         	'created_at'=>date('Y-m-d H:i:s'),
             'updated_at'=>date('Y-m-d H:i:s'),
         ]);

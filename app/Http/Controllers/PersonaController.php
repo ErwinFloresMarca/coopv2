@@ -29,27 +29,26 @@ class PersonaController extends Controller
         $per->password = $request['password'];
         //dd($per)
         $per->save();*/
-        $reglas=array("ci"=>"required|min:6|numeric|unique:personas",
-	"nombres"=>"required|string|",
-	"paterno"=>"string",
-	"materno"=>"required|string",
-	"telefono"=>"min:8|max:8|numeric",
-	"email"=>"required|email",
-	'password'=>'required|alpha_num',
-	'password_confir'=>'required|same:password');
-	$mensajes=array(
-	'password_confir.required'=>'la confirmacion de la contrasenia es requerida',
-	'password_confir.same'=>'la confirmacion de contrasenia no es igual a la contrasenua'
-	);
-	$errores=$this->validate(request(),$reglas,$mensajes);
-	//dd($errores);
-/*
-	if(!$errores){
+        $reglas=array("ci"=>"required|min:100000|numeric|unique:personas",
+      	"nombres"=>"required|string|",
+      	"paterno"=>"string",
+      	"materno"=>"required|string",
+      	"telefono"=>"min:10000000|max:99999999|numeric",
+      	"email"=>"required|email",
+      	'password'=>'required|alpha_num',
+      	'password_confir'=>'required|same:password');
+      	$mensajes=array(
+      	'password_confir.required'=>'la confirmacion de la contrasenia es requerida',
+      	'password_confir.same'=>'la confirmacion de contrasenia no es igual a la contrasenua'
+      	);
+      	$errores=$this->validate(request(),$reglas,$mensajes);
 
-		$per->guardar($request);
-        	//returnÂ "persona guardada";
-        	return redirect('persona'); //redirect a modelo
-	}*/
+      	if($errores){
+      		    $per->guardar($request);
+              	//returnï¿½ "persona guardada";
+      	      return redirect('persona'); //redirect a modelo
+        }
+
     }
 
     //26/04/2019

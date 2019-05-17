@@ -78,7 +78,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'es',
 
     /*
     |--------------------------------------------------------------------------
@@ -165,7 +165,7 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
 //aumentar esto
-        Collective\Html\HtmlServiceProvider::class, 
+        Collective\Html\HtmlServiceProvider::class,
 
         /*
          * Package Service Providers...

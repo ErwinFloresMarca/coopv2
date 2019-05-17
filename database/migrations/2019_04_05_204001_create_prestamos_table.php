@@ -22,9 +22,9 @@ class CreatePrestamosTable extends Migration
             $table->integer('estado');
             $table->integer('socio_id')->unsigned();
             $table->integer('asesor_id')->unsigned();
-            $table->foreign('socio_id')->references('persona_id')->on('socios');
+            $table->foreign('socio_id')->references('id')->on('socios');
             $table->foreign('asesor_id')->references('id')->on('asesores');
-            
+
             $table->timestamps();
         });
     }
