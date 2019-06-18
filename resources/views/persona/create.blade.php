@@ -1,6 +1,8 @@
 <html>
 <head>
-	<title>Nueva persona</title>
+
+	<meta charset="utf-8">
+  <title>Nueva persona</title>
 </head>
 <body>
 	{{Form::open(array('route'=>'persona.store','method'=>'post')) }}
@@ -60,5 +62,6 @@
 			 @endif
        {{ Form::reset('Borrar') }}
        {{ Form::submit('Guardar',['class'=>'']) }}
+		{{Form::close()}}
 </body>
 </html>

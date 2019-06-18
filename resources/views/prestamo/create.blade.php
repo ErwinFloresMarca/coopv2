@@ -3,7 +3,7 @@
 	<title>Nuevo Préstamo</title>
 </head>
 <body>
-	
+
 	{{ Form::open(array('route'=>'prestamo.crear','method'=>'post'))}}
 
 	     {{Form::label('monto','Monto(Bs.)')}}

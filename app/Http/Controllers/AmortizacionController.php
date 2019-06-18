@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Persona;
+use App\Prestamo;
 class AmortizacionController extends Controller
 {
     /**
@@ -19,10 +20,16 @@ class AmortizacionController extends Controller
 //07/05/19
     public function buscar(Request $request){
         //dd($request);
+        $reglas=array('ci'=>'required|numeric|exists:personas');
+
+        $mensajes=array(
+          'ci.exists'=>'No existe el C.I.',
+        );
+        $errores=$this->validate(request(),$reglas,$mensajes);
         $socio = Persona::where('ci',$request['ci'])->get()
                     ->last()->socio;
         if(isset($socio)){
-            $prestamo = $socio->prestamos->last();
+            $prestamo = Prestamo::where('socio_id',$socio->id)->where('estado',1)->get()->last();
 
             if(isset($prestamo)) {
                 $amortizacion = $prestamo->amortizaciones;
@@ -42,8 +49,13 @@ class AmortizacionController extends Controller
                 $datos['prestamo_id']=$prestamo->id;
                 return view('amortizacion.create')->with('datos',$datos);            //¿cómo calcularía la nueva cifra? chan chan chan...., me muero, me muero chu chu chu, ViERNES!!!:D :(
             }
+            else {
+              return redirect('amortizaciones')->with('mensaje','El socio no tiene prestamos vigentes');
+            }
         }
-        return "No es socio";
+        else{
+          return redirect('amortizaciones')->with('mensaje','El C.I. no es socio.');
+        }
     }
 
     /**
@@ -64,12 +76,13 @@ class AmortizacionController extends Controller
      */
     public function store(Request $request)
     {
-        $reglas=array('monto'=>'max:'.(int)($request['saldo']+$request['interes']).'|min:'.($request['capital']+$request['interes']).'');
+        $max=round(($request['saldo']+$request['interes']),2);
+        $min=round(($request['capital']+$request['interes']),2);
+        $reglas=array('monto'=>'max:'.$max.'|min:'.$min.'');
         //dd($request);
-        //dd($reglas);
         $errores=$this->validate(request(),$reglas);
 
-        if(false){
+        if($errores){
           $amortizacion=new Amortizacion;
           $amortizacion->capital =$request['monto']-$request['interes'];
           $amortizacion->interes=$request['interes'];
